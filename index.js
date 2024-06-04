@@ -39,20 +39,20 @@ function getIndex(possition) {
       return true;
     }
   });
+  if (index == -1) {
+    return new Error("Not a possible Position");
+  }
   return index;
 }
 function knightTravails(start, end) {
   let startIndex = getIndex(start);
   let endIndex = getIndex(end);
-  if (startIndex == -1 || endIndex == -1) {
-    return new Error("Not a possible Position");
-  }
   let queue = [startIndex];
   let visited = new Array(64).fill(false);
   visited[startIndex] = true;
   let prev = new Array(64).fill(null);
   let found = false;
-  while (queue.length > 0 && found == false) {
+  while (!found) {
     let current = queue[0];
     let currentEdges = edges[current];
     let currentEdgesLength = currentEdges.length;
@@ -68,9 +68,9 @@ function knightTravails(start, end) {
     }
     queue.shift();
   }
-  return reconstructePath(startIndex, endIndex, prev);
+  return getPath(startIndex, endIndex, prev);
 }
-function reconstructePath(startIndex, endIndex, prev) {
+function getPath(startIndex, endIndex, prev) {
   let path = [board[endIndex]];
   let current = endIndex;
   while (prev[current] !== null) {
